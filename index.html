@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mehfil-e-Sama | Nostalgic Qawwali & Ghazal Experience</title>
+  <meta name="description" content="A deeply nostalgic, interactive midnight mehfil celebrating the golden era of Qawwali and Ghazal music." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@700&family=Rozha+One&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Reenie+Beanie&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & VINTAGE MEHFIL TOKENS
+       ========================================================================== */
+    :root {
+      --bg-dark: #090505;
+      --bg-velvet: #18080c;
+      --gold-primary: #e6c280;
+      --gold-glowing: #ffd782;
+      --gold-dark: #8c6d37;
+      --crimson-deep: #4a0c17;
+      --crimson-accent: #8b1e2d;
+      --amber-warm: #ffaa3b;
+      --parchment: #f4ebd9;
+      --text-muted: rgba(244, 235, 217, 0.65);
+      --glass-bg: rgba(24, 8, 12, 0.65);
+      --glass-border: rgba(230, 194, 128, 0.25);
+      --glass-blur: blur(16px);
+      --shadow-glowing: 0 0 35px rgba(255, 170, 59, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg-dark);
+      color: var(--parchment);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Background image & Canvas */
+    .bg-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: linear-gradient(180deg, rgba(9, 5, 5, 0.85) 0%, rgba(24, 8, 12, 0.75) 50%, rgba(9, 5, 5, 0.95) 100%),
+                  url('assets/background.jpg') center/cover no-repeat;
+      filter: contrast(1.05) saturate(1.1);
+      transition: transform 0.3s ease-out;
+    }
+
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Ambient Lighting Overlay */
+    .vignette-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 40%, transparent 20%, rgba(0, 0, 0, 0.75) 85%);
+      box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+    }
+
+    /* Main Container */
+    .app-wrapper {
+      position: relative;
+      z-index: 2;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 120px 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* ==========================================================================
+       HEADER & NOSTALGIC TOP BAR
+       ========================================================================== */
+    .top-status-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: var(--glass-blur);
+      border-radius: 50px;
+      margin-bottom: 2rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gold-primary);
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #4caf50;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #4caf50;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+    }
+
+    .radio-frequency {
+      font-family: monospace;
+      background: rgba(230, 194, 128, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      border: 1px solid rgba(230, 194, 128, 0.2);
+    }
+
+    /* Main Nostalgic Hero Section */
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: fadeInDown 1.2s ease-out;
+    }
+
+    .urdu-calligraphy-subtitle {
+      font-family: 'Amiri', serif;
+      font-size: 2.2rem;
+      color: var(--gold-glowing);
+      text-shadow: 0 0 15px rgba(255, 215, 130, 0.4);
+      margin-bottom: 0.2rem;
+      letter-spacing: 1px;
+    }
+
+    .main-title {
+    font-family: 'Cinzel Decorative', 'Rozha One', serif;
+    font-size: 3.8rem;
+    background: linear-gradient(180deg, #fff 0%, var(--gold-primary) 60%, var(--gold-dark) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    letter-spacing: 3px;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+    .artist-tribute-line {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+    } 
+
+    .artist-tribute-line span {
+      color: var(--gold-primary);
+    }
+
+    /* ==========================================================================
+       ROTATING QUOTES & SHAYARI TICKER
+       ========================================================================== */
+    .quote-card-container {
+      width: 100%;
+      max-width: 850px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: var(--glass-blur);
+      border-radius: 20px;
+      padding: 1.8rem 2.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+      text-align: center;
+    }
+
+    .quote-card-container::before {
+      content: '“';
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      font-family: 'Amiri', serif;
+      font-size: 6rem;
+      color: rgba(230, 194, 128, 0.15);
+      line-height: 1;
+    }
+
+    .quote-content {
+      min-height: 90px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .quote-couplet {
+      font-family: 'Amiri', serif;
+      font-size: 1.65rem;
+      color: #fff;
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+    }
+
+    .quote-transliteration {
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--gold-primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .quote-author {
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .quote-progress-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--crimson-accent), var(--gold-primary));
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* ==========================================================================
+       CENTRAL INTERACTIVE VISUAL & HARMONIUM / TABLA
+       ========================================================================== */
+    .central-mehfil-stage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      width: 100%;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 900px) {
+      .central-mehfil-stage {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Vintage Cassette Tape & Artwork Showcase */
+    .album-art-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: var(--glass-blur);
+      border-radius: 24px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    .cassette-frame {
+      position: relative;
+      width: 100%;
+      max-width: 340px;
+      aspect-ratio: 1;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.8), 0 0 0 2px rgba(230, 194, 128, 0.3);
+      margin-bottom: 1.2rem;
+    }
+
+    .cassette-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .cassette-frame:hover img {
+      transform: scale(1.04);
+    }
+
+    .spool-wheels {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      display: flex;
+      justify-content: space-around;
+      pointer-events: none;
+    }
+
+    .spool {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      border: 4px dashed rgba(230, 194, 128, 0.6);
+      background: rgba(0,0,0,0.4);
+      animation: spin 8s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .is-playing .spool {
+      animation-play-state: running;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .mehfil-actions {
+      display: flex;
+      gap: 1rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, rgba(139, 30, 45, 0.8), rgba(74, 12, 23, 0.9));
+      border: 1px solid var(--gold-primary);
+      color: var(--parchment);
+      padding: 0.75rem 1.4rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .btn-action:hover {
+      background: linear-gradient(135deg, rgba(230, 194, 128, 0.9), rgba(140, 109, 55, 0.9));
+      color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(230, 194, 128, 0.4);
+    }
+
+    .btn-action:active {
+      transform: translateY(0);
+    }
+
+    /* Virtual Interactive Harmonium Keyboard */
+    .harmonium-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: var(--glass-blur);
+      border-radius: 24px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+
+    .harmonium-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(230, 194, 128, 0.2);
+      padding-bottom: 0.75rem;
+    }
+
+    .harmonium-title {
+      font-family: 'Amiri', serif;
+      font-size: 1.4rem;
+      color: var(--gold-glowing);
+    }
+
+    .key-badge {
+      font-size: 0.75rem;
+      background: rgba(230, 194, 128, 0.15);
+      border: 1px solid var(--glass-border);
+      padding: 0.2rem 0.6rem;
+      border-radius: 10px;
+      color: var(--gold-primary);
+    }
+
+    .keys-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 160px;
+      position: relative;
+      background: #11090a;
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: inset 0 5px 15px rgba(0,0,0,0.9), 0 0 0 2px #3d1b20;
+    }
+
+    .key-white {
+      flex: 1;
+      height: 100%;
+      background: linear-gradient(180deg, #fdfbf7 0%, #e6decb 100%);
+      border: 1px solid #999;
+      border-radius: 0 0 6px 6px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 8px;
+      color: #333;
+      font-weight: 700;
+      font-size: 0.75rem;
+      box-shadow: inset 0 -5px 10px rgba(0,0,0,0.15), 0 3px 6px rgba(0,0,0,0.3);
+      transition: background 0.1s, transform 0.1s;
+      z-index: 1;
+    }
+
+    .key-white:hover {
+      background: #f4ebd9;
+    }
+
+    .key-white.active {
+      background: var(--gold-primary);
+      transform: translateY(4px);
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+    }
+
+    .key-black {
+      width: 7.5%;
+      height: 60%;
+      background: linear-gradient(180deg, #2b2b2b 0%, #000000 100%);
+      border: 1px solid #000;
+      border-radius: 0 0 4px 4px;
+      position: absolute;
+      z-index: 2;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 6px;
+      color: var(--gold-primary);
+      font-size: 0.65rem;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.8);
+      transition: background 0.1s, transform 0.1s;
+    }
+
+    .key-black.active {
+      background: var(--crimson-accent);
+      transform: translateY(3px);
+    }
+
+    .tabla-section {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: space-around;
+      align-items: center;
+      background: rgba(0,0,0,0.3);
+      padding: 0.8rem;
+      border-radius: 12px;
+      border: 1px solid rgba(230, 194, 128, 0.1);
+    }
+
+    .tabla-drum {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #d9b882 0%, #8c632e 45%, #2a1505 85%);
+      border: 4px solid #5a3e1b;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 0.8rem;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.6);
+      transition: transform 0.1s ease;
+    }
+
+    .tabla-drum:active {
+      transform: scale(0.92);
+    }
+
+    .tabla-drum::after {
+      content: '';
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #111;
+      opacity: 0.85;
+    }
+
+    /* ==========================================================================
+       NOSTALGIC MEMORY CARDS / SIDE A & B TAPE SHELF
+       ========================================================================== */
+    .memories-section {
+      width: 100%;
+      margin-bottom: 3rem;
+    }
+
+    .section-title-wrapper {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.8rem;
+      color: var(--gold-glowing);
+      letter-spacing: 2px;
+    }
+
+    .memories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    .memory-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: var(--glass-blur);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .memory-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--gold-primary);
+      box-shadow: var(--shadow-glowing);
+    }
+
+    .memory-tag {
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold-primary);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .memory-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .memory-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       GLASSMORPHISM BOTTOM MUSIC PLAYER
+       ========================================================================== */
+    .bottom-player-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(15, 6, 9, 0.88);
+      border-top: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      padding: 0.8rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+    }
+
+    @media (max-width: 768px) {
+      .bottom-player-bar {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 0.8rem 1rem;
+      }
+    }
+
+    .player-track-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-width: 250px;
+    }
+
+    .track-thumb {
+      width: 52px;
+      height: 52px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .track-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .track-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    .track-artist {
+      font-size: 0.8rem;
+      color: var(--gold-primary);
+    }
+
+    .player-center-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      max-width: 600px;
+      gap: 0.4rem;
+    }
+
+    .control-buttons {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .btn-ctrl {
+      background: none;
+      border: none;
+      color: var(--parchment);
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: color 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-ctrl:hover {
+      color: var(--gold-primary);
+      transform: scale(1.15);
+    }
+
+    .btn-play-pause {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+      color: #000;
+      font-size: 1.2rem;
+      box-shadow: 0 0 15px rgba(230, 194, 128, 0.4);
+    }
+
+    .btn-play-pause:hover {
+      background: #fff;
+      color: #000;
+      transform: scale(1.08);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 5px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--crimson-accent), var(--gold-primary));
+      width: 0%;
+      border-radius: 5px;
+      transition: width 0.1s linear;
+    }
+
+    .player-right-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-width: 180px;
+      justify-content: flex-end;
+    }
+
+    .volume-slider {
+      width: 80px;
+      accent-color: var(--gold-primary);
+      cursor: pointer;
+    }
+
+    /* Audio Visualizer Canvas in Player */
+    .visualizer-canvas {
+      width: 80px;
+      height: 30px;
+    }
+
+    /* Hidden YouTube IFrame Container */
+    #youtube-iframe-container {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      left: -9999px;
+    }
+
+    /* Tracklist Drawer Modal */
+    .tracklist-modal {
+      position: fixed;
+      bottom: 80px;
+      right: 2rem;
+      width: 360px;
+      max-height: 450px;
+      background: rgba(15, 6, 9, 0.95);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(25px);
+      border-radius: 20px;
+      z-index: 101;
+      padding: 1.2rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      display: none;
+      flex-direction: column;
+      animation: fadeInUp 0.3s ease-out;
+    }
+
+    .tracklist-modal.open {
+      display: flex;
+    }
+
+    .tracklist-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(230, 194, 128, 0.2);
+      padding-bottom: 0.5rem;
+    }
+
+    .tracklist-title {
+      font-family: 'Amiri', serif;
+      font-size: 1.3rem;
+      color: var(--gold-glowing);
+    }
+
+    .tracklist-items {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-right: 5px;
+    }
+
+    .tracklist-items::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .tracklist-items::-webkit-scrollbar-thumb {
+      background: var(--gold-dark);
+      border-radius: 10px;
+    }
+
+    .track-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .track-item:hover {
+      background: rgba(230, 194, 128, 0.15);
+    }
+
+    .track-item.active {
+      background: rgba(139, 30, 45, 0.5);
+      border: 1px solid var(--glass-border);
+    }
+
+    .track-item-num {
+      font-size: 0.8rem;
+      color: var(--gold-primary);
+      font-weight: 700;
+      width: 18px;
+    }
+
+    .track-item-details {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .track-item-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-item-artist {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Key Animations */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Image Overlay & Dynamic Particle Canvas -->
+  <div class="bg-container" id="bg-container"></div>
+  <canvas id="particles-canvas"></canvas>
+  <div class="vignette-overlay"></div>
+
+  <!-- Main Application Wrapper -->
+  <div class="app-wrapper">
+
+    <!-- Top Status Indicator Bar -->
+    <header class="top-status-bar">
+      <div class="status-item">
+        <div class="pulse-dot"></div>
+        <span>Mehfil-e-Sama • Live Broadcast</span>
+      </div>
+      <div class="status-item">
+        <span>Attar: <strong style="color:#fff;">Mogra & Amber</strong></span>
+      </div>
+      <div class="status-item">
+        <span>Freq: <span class="radio-frequency">98.4 AIR Radio Ceylon</span></span>
+      </div>
+    </header>
+
+    <!-- Nostalgic Hero Section -->
+    <section class="hero-header">
+      <h2 class="urdu-calligraphy-subtitle">محفلِ قوالی و غزل</h2>
+      <h1 class="main-title">Mehfil-E-Sama</h1>
+      <p class="artist-tribute-line">
+        Echoes of the Masters: <span>Nusrat Fatehal • Jagjit Singh • Ghulam Ali • Rahat Fateh • Farida Khanum • Sabri Brothers</span>
+      </p>
+    </section>
+
+    <!-- Rotating Quotes & Shayari Ticker Card -->
+    <section class="quote-card-container">
+      <div class="quote-content" id="quote-content">
+        <div class="quote-couplet" id="quote-couplet">हज़ारों ख़्वाहिशें ऐसी कि हर ख़्वाहिश पे दम निकले...</div>
+        <div class="quote-transliteration" id="quote-transliteration">Hazaron khwahishen aisi ke har khwahish pe dam nikle...</div>
+        <div class="quote-author" id="quote-author">— Mirza Ghalib</div>
+      </div>
+      <div class="quote-progress-bar" id="quote-progress"></div>
+    </section>
+
+    <!-- Central Interactive Mehfil Stage -->
+    <section class="central-mehfil-stage">
+
+      <!-- Left: Nostalgic Cassette Deck & Video Screen -->
+      <div class="album-art-card" id="cassette-deck-card">
+        <div class="cassette-frame">
+          <iframe id="yt-video-player" 
+                  src="https://www.youtube.com/embed/D8l3fLJ1Klw?enablejsapi=1&autoplay=0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen 
+                  style="width: 100%; height: 100%; border: none; border-radius: 12px;"></iframe>
+        </div>
+
+        <div class="mehfil-actions">
+          <button class="btn-action" id="btn-daad" title="Give Appreciation (Shortcut: W)">
+            <span>🌹</span> Wah! Wah! (Daad)
+          </button>
+          <button class="btn-action" id="btn-yt-link" onclick="openCurrentYouTubeLink()" title="Open Song on YouTube">
+            <span>▶</span> Listen on YouTube ↗
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Virtual Harmonium & Tabla Soundboard -->
+      <div class="harmonium-card">
+        <div class="harmonium-header">
+          <span class="harmonium-title">سازِ ہارمونیم و طبلہ</span>
+          <span class="key-badge">Press Keys A-L or 1-7 to Play</span>
+        </div>
+
+        <!-- Virtual Keys -->
+        <div class="keys-container" id="harmonium-keys">
+          <!-- White Keys -->
+          <div class="key-white" data-note="C4" data-key="A" style="left: 0%;">Sa <span>(A)</span></div>
+          <div class="key-white" data-note="D4" data-key="S" style="left: 14.28%;">Re <span>(S)</span></div>
+          <div class="key-white" data-note="E4" data-key="D" style="left: 28.56%;">Ga <span>(D)</span></div>
+          <div class="key-white" data-note="F4" data-key="F" style="left: 42.84%;">Ma <span>(F)</span></div>
+          <div class="key-white" data-note="G4" data-key="G" style="left: 57.12%;">Pa <span>(G)</span></div>
+          <div class="key-white" data-note="A4" data-key="H" style="left: 71.4%;">Dha <span>(H)</span></div>
+          <div class="key-white" data-note="B4" data-key="J" style="left: 85.68%;">Ni <span>(J)</span></div>
+
+          <!-- Black Keys (Accidentals) -->
+          <div class="key-black" data-note="C#4" data-key="W" style="left: 10%;"><span>(W)</span></div>
+          <div class="key-black" data-note="D#4" data-key="E" style="left: 24%;"><span>(E)</span></div>
+          <div class="key-black" data-note="F#4" data-key="T" style="left: 52%;"><span>(T)</span></div>
+          <div class="key-black" data-note="G#4" data-key="Y" style="left: 66%;"><span>(Y)</span></div>
+          <div class="key-black" data-note="A#4" data-key="U" style="left: 80%;"><span>(U)</span></div>
+        </div>
+
+        <!-- Tabla Drums Section -->
+        <div class="tabla-section">
+          <div class="tabla-drum" id="tabla-bayyan" title="Click or Press Spacebar for Dha stroke">
+            Dha
+          </div>
+          <div class="tabla-drum" id="tabla-dayan" title="Click or Press Shift for Tin stroke">
+            Tin
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Memories & Golden Era Highlights Shelf -->
+    <section class="memories-section">
+      <div class="section-title-wrapper">
+        <h3 class="section-title">Yadaan - The Nusrat Fateh Ali Khan Playlist</h3>
+      </div>
+
+      <div class="memories-grid">
+
+        <div class="memory-card" onclick="playTrackIndex(0)">
+          <div class="memory-tag">SIDE A • TRACK 01</div>
+          <div class="memory-title">Yeh Jo Halka Halka Suroor Hai</div>
+          <div class="memory-desc">Ustad Nusrat Fateh Ali Khan — The iconic masterpiece of Sufi intoxication and divine ecstasy.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(1)">
+          <div class="memory-tag">SIDE A • TRACK 02</div>
+          <div class="memory-title">Akhiyan Udeek Dian</div>
+          <div class="memory-desc">Ustad Nusrat Fateh Ali Khan — The eternal melody of longing and searching eyes under moonlight.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(2)">
+          <div class="memory-tag">SIDE A • TRACK 03</div>
+          <div class="memory-title">Jani Door Gaye</div>
+          <div class="memory-desc">Ustad Nusrat Fateh Ali Khan — Heartfelt echoes of devotion, separation, and timeless poetry.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(3)">
+          <div class="memory-tag">SIDE A • TRACK 04</div>
+          <div class="memory-title">Kali Kali Zhulfo Wali</div>
+          <div class="memory-desc">Ustad Nusrat Fateh Ali Khan — Fast-paced mesmerizing qawwali with intense claps and harmonium.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(4)">
+          <div class="memory-tag">SIDE A • TRACK 05</div>
+          <div class="memory-title">Barsoon Kay Intizar Ka</div>
+          <div class="memory-desc">Ustad Nusrat Fateh Ali Khan — Decades of patient waiting resolved in one sublime melody.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(5)">
+          <div class="memory-tag">SIDE B • TRACK 06</div>
+          <div class="memory-title">Tumhe Dillagi Bhool Jani Padegi</div>
+          <div class="memory-desc">Ustad Nusrat Fateh Ali Khan — High intensity classical qawwali performance filled with emotion.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(6)">
+          <div class="memory-tag">SIDE B • TRACK 07</div>
+          <div class="memory-title">Mera Piya Ghar Aaya</div>
+          <div class="memory-desc">Ustad Nusrat Fateh Ali Khan — Celebratory Sufi ecstasy of Baba Bulleh Shah's immortal poetry.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(7)">
+          <div class="memory-tag">SIDE B • TRACK 08</div>
+          <div class="memory-title">Woh Na Hoga To Kya Kami Hogi</div>
+          <div class="memory-desc">Ustad Nusrat Fateh Ali Khan — Soothing ghazal of quiet contemplation and midnight reflections.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(8)">
+          <div class="memory-tag">SIDE B • TRACK 09</div>
+          <div class="memory-title">Dam Mast Qalandar</div>
+          <div class="memory-desc">Ustad Nusrat Fateh Ali Khan — High energy spiritual trance celebrating Lal Shahbaz Qalandar.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(9)">
+          <div class="memory-tag">SIDE C • TRACK 10</div>
+          <div class="memory-title">Hungama Hai Kyon Barpa</div>
+          <div class="memory-desc">Ustad Ghulam Ali — Playful classical ghazal filled with daad and intricate improvisations.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(10)">
+          <div class="memory-tag">SIDE C • TRACK 11</div>
+          <div class="memory-title">Dil Mein Ek Lahar Si Uthi Hai</div>
+          <div class="memory-desc">Ustad Ghulam Ali — Silky smooth ghazal soothing the quiet nocturnal breeze.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(11)">
+          <div class="memory-tag">SIDE C • TRACK 12</div>
+          <div class="memory-title">Tum Itna Jo Muskura Rahe Ho</div>
+          <div class="memory-desc">Jagjit Singh — The Ghazal King's deeply touching masterpiece of hidden sorrow behind smiles.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(12)">
+          <div class="memory-tag">SIDE D • TRACK 13</div>
+          <div class="memory-title">Wo Kagaz Ki Kashti</div>
+          <div class="memory-desc">Jagjit Singh & Chitra Singh — Nostalgic childhood memories of paper boats and rainy days.</div>
+        </div>
+
+        <div class="memory-card" onclick="playTrackIndex(13)">
+          <div class="memory-tag">SIDE D • TRACK 14</div>
+          <div class="memory-title">Kora Kagaz Tha Yeh Man Mera</div>
+          <div class="memory-desc">Kishore Kumar & Lata Mangeshkar — Golden retro romantic classic from Aradhana.</div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Hidden YouTube IFrame Container for API Integration -->
+  <div id="youtube-iframe-container">
+    <div id="yt-player"></div>
+  </div>
+
+  <!-- Tracklist Drawer Overlay Modal -->
+  <div class="tracklist-modal" id="tracklist-modal">
+    <div class="tracklist-header">
+      <span class="tracklist-title">Playlist • 14 Mehfil Classics</span>
+      <button class="btn-ctrl" onclick="toggleTracklist()">✕</button>
+    </div>
+    <div class="tracklist-items" id="tracklist-items">
+      <!-- Tracks populated dynamically via JS -->
+    </div>
+  </div>
+
+  <!-- Glassmorphism Fixed Bottom Music Player -->
+  <div class="bottom-player-bar" id="player-bar">
+
+    <!-- Track Thumbnail & Info -->
+    <div class="player-track-info">
+      <img src="assets/album_cover.jpg" alt="Track Cover" class="track-thumb" id="player-thumb" />
+      <div class="track-details">
+        <div class="track-title" id="player-title">Yeh Jo Halka Halka Suroor Hai</div>
+        <div class="track-artist" id="player-artist">Ustad Nusrat Fateh Ali Khan</div>
+      </div>
+    </div>
+
+    <!-- Center Playback Controls & Scrubber -->
+    <div class="player-center-controls">
+      <div class="control-buttons">
+        <button class="btn-ctrl" id="btn-shuffle" title="Shuffle" onclick="toggleShuffle()">🔀</button>
+        <button class="btn-ctrl" id="btn-prev" title="Previous Track" onclick="prevTrack()">⏮</button>
+        <button class="btn-ctrl btn-play-pause" id="btn-play" title="Play / Pause" onclick="togglePlay()">▶</button>
+        <button class="btn-ctrl" id="btn-next" title="Next Track" onclick="nextTrack()">⏭</button>
+        <button class="btn-ctrl" id="btn-repeat" title="Repeat" onclick="toggleRepeat()">🔁</button>
+      </div>
+
+      <div class="progress-bar-container">
+        <span id="time-current">0:00</span>
+        <div class="progress-bar" id="progress-bar" onclick="seekTrack(event)">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <span id="time-total">0:00</span>
+      </div>
+    </div>
+
+    <!-- Right Controls: Volume, Playlist Drawer, Visualizer -->
+    <div class="player-right-controls">
+      <canvas class="visualizer-canvas" id="visualizer-canvas"></canvas>
+      <button class="btn-ctrl" id="btn-playlist" title="Playlist Tracks" onclick="toggleTracklist()">📜</button>
+      <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="80" oninput="changeVolume(this.value)" />
+    </div>
+
+  </div>
+
+  <!-- Embedded JavaScript Logic -->
+  <script>
+    /* ==========================================================================
+       PLAYLIST DATA & YOUTUBE INTEGRATION
+       ========================================================================== */
+    // Provided YouTube Playlist ID: PLLlxDon9L5aU
+    const PLAYLIST_ID = 'PLLlxDon9L5aU';
+    
+    // Complete 14 YouTube links provided by the user
+    const tracksList = [
+      { id: 'D8l3fLJ1Klw', title: 'Yeh Jo Halka Halka Suroor Hai', artist: 'Ustad Nusrat Fateh Ali Khan', duration: '7:12', url: 'https://youtu.be/D8l3fLJ1Klw?list=PLLlxDon9L5aU' },
+      { id: 'YSMIDIt2Ku4', title: 'Akhiyan Udeek Dian', artist: 'Ustad Nusrat Fateh Ali Khan', duration: '6:48', url: 'https://youtu.be/YSMIDIt2Ku4?list=PLLlxDon9L5aU' },
+      { id: 'r8mIeP3aRQs', title: 'Jani Door Gaye', artist: 'Ustad Nusrat Fateh Ali Khan', duration: '8:30', url: 'https://youtu.be/r8mIeP3aRQs?list=PLLlxDon9L5aU' },
+      { id: 'bECbyyTjM44', title: 'Kali Kali Zhulfo Wali', artist: 'Ustad Nusrat Fateh Ali Khan', duration: '9:15', url: 'https://youtu.be/bECbyyTjM44?list=PLLlxDon9L5aU' },
+      { id: 'PFxomXeIq4w', title: 'Barsoon Kay Intizar Ka', artist: 'Ustad Nusrat Fateh Ali Khan', duration: '7:55', url: 'https://youtu.be/PFxomXeIq4w?list=PLLlxDon9L5aU' },
+      { id: 'IxUr9pHuE4g', title: 'Tumhe Dillagi Bhool Jani Padegi', artist: 'Ustad Nusrat Fateh Ali Khan', duration: '12:45', url: 'https://youtu.be/IxUr9pHuE4g?list=PLLlxDon9L5aU' },
+      { id: 'qoqlJGOQtuQ', title: 'Mera Piya Ghar Aaya', artist: 'Ustad Nusrat Fateh Ali Khan', duration: '9:10', url: 'https://youtu.be/qoqlJGOQtuQ?list=PLLlxDon9L5aU' },
+      { id: 'QOricoKI03k', title: 'Woh Na Hoga To Kya Kami Hogi', artist: 'Ustad Nusrat Fateh Ali Khan', duration: '6:30', url: 'https://youtu.be/QOricoKI03k?list=PLLlxDon9L5aU' },
+      { id: 'v38w5djsbXM', title: 'Dam Mast Qalandar', artist: 'Ustad Nusrat Fateh Ali Khan', duration: '11:20', url: 'https://youtu.be/v38w5djsbXM?list=PLLlxDon9L5aU' },
+      { id: 'xQsMn1kmJs4', title: 'Hungama Hai Kyon Barpa', artist: 'Ustad Ghulam Ali', duration: '8:15', url: 'https://youtu.be/xQsMn1kmJs4?list=PLLlxDon9L5aU' },
+      { id: 'eIE4azF6Obs', title: 'Dil Mein Ek Lahar Si Uthi Hai', artist: 'Ustad Ghulam Ali', duration: '6:20', url: 'https://youtu.be/eIE4azF6Obs?list=PLLlxDon9L5aU' },
+      { id: 'Ju6kNKaBOQ8', title: 'Tum Itna Jo Muskura Rahe Ho', artist: 'Jagjit Singh', duration: '5:20', url: 'https://youtu.be/Ju6kNKaBOQ8?list=PLLlxDon9L5aU' },
+      { id: 'tB0hmrY_s0U', title: 'Wo Kagaz Ki Kashti', artist: 'Jagjit Singh & Chitra Singh', duration: '4:15', url: 'https://youtu.be/tB0hmrY_s0U?list=PLLlxDon9L5aU' },
+      { id: 'kqXs4GGp8bw', title: 'Kora Kagaz Tha Yeh Man Mera', artist: 'Kishore Kumar & Lata Mangeshkar', duration: '5:35', url: 'https://www.youtube.com/watch?v=kqXs4GGp8bw&list=PLLlxDon9L5aU&index=14' }
+    ];
+
+    let currentTrackIdx = 0;
+    let isPlaying = false;
+    let progressTimer = null;
+    let currentProgressSecs = 0;
+
+    function openCurrentYouTubeLink() {
+      const track = tracksList[currentTrackIdx];
+      if (track && track.url) {
+        window.open(track.url, '_blank');
+      }
+    }
+
+    function playTrackIndex(index) {
+      if (index < 0 || index >= tracksList.length) return;
+      currentTrackIdx = index;
+      currentProgressSecs = 0;
+      const track = tracksList[currentTrackIdx];
+
+      const iframe = document.getElementById('yt-video-player');
+      if (iframe) {
+        iframe.src = `https://www.youtube.com/embed/${track.id}?autoplay=1&enablejsapi=1`;
+      }
+
+      isPlaying = true;
+      document.getElementById('btn-play').textContent = '⏸';
+      document.getElementById('cassette-deck-card').classList.add('is-playing');
+
+      updatePlayerUI();
+      highlightActiveTrack();
+      startProgressLoop();
+    }
+
+    function togglePlay() {
+      const iframe = document.getElementById('yt-video-player');
+      if (!iframe) return;
+
+      if (isPlaying) {
+        isPlaying = false;
+        document.getElementById('btn-play').textContent = '▶';
+        document.getElementById('cassette-deck-card').classList.remove('is-playing');
+        try {
+          iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        } catch(e) {}
+      } else {
+        isPlaying = true;
+        document.getElementById('btn-play').textContent = '⏸';
+        document.getElementById('cassette-deck-card').classList.add('is-playing');
+        try {
+          iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        } catch(e) {}
+        startProgressLoop();
+      }
+    }
+
+    function nextTrack() {
+      currentTrackIdx = (currentTrackIdx + 1) % tracksList.length;
+      playTrackIndex(currentTrackIdx);
+    }
+
+    function prevTrack() {
+      currentTrackIdx = (currentTrackIdx - 1 + tracksList.length) % tracksList.length;
+      playTrackIndex(currentTrackIdx);
+    }
+
+    function updatePlayerUI() {
+      const track = tracksList[currentTrackIdx];
+      document.getElementById('player-title').textContent = track.title;
+      document.getElementById('player-artist').textContent = track.artist;
+      document.getElementById('time-total').textContent = track.duration;
+      document.getElementById('player-thumb').src = `https://img.youtube.com/vi/${track.id}/hqdefault.jpg`;
+    }
+
+    function startProgressLoop() {
+      if (progressTimer) clearInterval(progressTimer);
+      
+      const totalSecs = parseDurationSecs(tracksList[currentTrackIdx].duration);
+
+      progressTimer = setInterval(() => {
+        if (!isPlaying) return;
+        currentProgressSecs += 1;
+        if (currentProgressSecs >= totalSecs) {
+          nextTrack();
+          return;
+        }
+
+        const percent = (currentProgressSecs / totalSecs) * 100;
+        document.getElementById('progress-fill').style.width = `${percent}%`;
+        document.getElementById('time-current').textContent = formatTime(currentProgressSecs);
+      }, 1000);
+    }
+
+    function parseDurationSecs(durationStr) {
+      const parts = durationStr.split(':');
+      if (parts.length === 2) {
+        return parseInt(parts[0]) * 60 + parseInt(parts[1]);
+      }
+      return 300;
+    }
+
+    function seekTrack(event) {
+      const rect = event.currentTarget.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const width = rect.width;
+      const seekRatio = clickX / width;
+      const totalSecs = parseDurationSecs(tracksList[currentTrackIdx].duration);
+      currentProgressSecs = Math.floor(seekRatio * totalSecs);
+      
+      document.getElementById('progress-fill').style.width = `${seekRatio * 100}%`;
+      document.getElementById('time-current').textContent = formatTime(currentProgressSecs);
+    }
+
+    function changeVolume(val) {
+      if (droneGain && audioCtx) {
+        droneGain.gain.setValueAtTime((val / 100) * 0.2, audioCtx.currentTime);
+      }
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function toggleTracklist() {
+      const modal = document.getElementById('tracklist-modal');
+      modal.classList.toggle('open');
+    }
+
+    function renderTracklist() {
+      const container = document.getElementById('tracklist-items');
+      container.innerHTML = '';
+      tracksList.forEach((track, idx) => {
+        const item = document.createElement('div');
+        item.className = `track-item ${idx === currentTrackIdx ? 'active' : ''}`;
+        item.onclick = () => playTrackIndex(idx);
+        item.innerHTML = `
+          <span class="track-item-num">${idx + 1}</span>
+          <div class="track-item-details">
+            <span class="track-item-name">${track.title}</span>
+            <span class="track-item-artist">${track.artist}</span>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function highlightActiveTrack() {
+      const items = document.querySelectorAll('.track-item');
+      items.forEach((item, idx) => {
+        if (idx === currentTrackIdx) item.classList.add('active');
+        else item.classList.remove('active');
+      });
+    }
+
+    /* ==========================================================================
+       ROTATING SHAYARI & NOSTALGIC QUOTES
+       ========================================================================== */
+    const quotes = [
+      { couplet: 'हज़ारों ख़्वाहिशें ऐसी कि हर ख़्वाहिश पे दम निकले...', trans: 'Hazaron khwahishen aisi ke har khwahish pe dam nikle...', author: 'Mirza Ghalib' },
+      { couplet: 'ये जो हल्का हल्का सुरूर है, सब तेरी नज़र का क़सूर है...', trans: 'Ye jo halka halka suroor hai, sab teri nazar ka qasoor hai...', author: 'Ustad Nusrat Fateh Ali Khan' },
+      { couplet: 'तुमको देखा तो ये ख़याल आया, ज़िंदगी धूप तुम घना साया...', trans: 'Tumko dekha toh yeh khayal aaya, zindagi dhoop tum ghana saaya...', author: 'Jagjit Singh' },
+      { couplet: 'हंगामा है क्यों बरपा थोड़ी सी जो पी ली है...', trans: 'Hungama hai kyon barpa thodi si jo pee li hai...', author: 'Ustad Ghulam Ali' },
+      { couplet: 'आज जाने की ज़िद न करो, यूँ ही पहलू में बैठे रहो...', trans: 'Aaj jaane ki zid na karo, yun hi pehlu mein baithe raho...', author: 'Farida Khanum' },
+      { couplet: 'तेरे रश्के क़मर तूने पहली नज़र, जब नज़र से मिलाई मज़ा आ गया...', trans: 'Tere rashke qamar tune pehli nazar, jab nazar se milai maza aa gaya...', author: 'Rahat Fateh Ali Khan' }
+    ];
+
+    let quoteIndex = 0;
+    const QUOTE_INTERVAL = 7000;
+
+    function rotateQuotes() {
+      const container = document.getElementById('quote-content');
+      const progressBar = document.getElementById('quote-progress');
+      
+      // Animate Progress Bar
+      progressBar.style.width = '0%';
+      setTimeout(() => { progressBar.style.width = '100%'; }, 50);
+
+      setInterval(() => {
+        container.style.opacity = 0;
+        container.style.transform = 'translateY(10px)';
+
+        setTimeout(() => {
+          quoteIndex = (quoteIndex + 1) % quotes.length;
+          const q = quotes[quoteIndex];
+          document.getElementById('quote-couplet').textContent = q.couplet;
+          document.getElementById('quote-transliteration').textContent = q.trans;
+          document.getElementById('quote-author').textContent = `— ${q.author}`;
+
+          container.style.opacity = 1;
+          container.style.transform = 'translateY(0)';
+
+          progressBar.style.transition = 'none';
+          progressBar.style.width = '0%';
+          setTimeout(() => {
+            progressBar.style.transition = `width ${QUOTE_INTERVAL}ms linear`;
+            progressBar.style.width = '100%';
+          }, 50);
+        }, 600);
+      }, QUOTE_INTERVAL);
+    }
+
+    /* ==========================================================================
+       WEB AUDIO SYNTHESIZER: HARMONIUM, TABLA & RADIO STATIC
+       ========================================================================== */
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+      }
+    }
+
+    // Frequencies for Harmonium Notes
+    const noteFreqs = {
+      'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13,
+      'E4': 329.63, 'F4': 349.23, 'F#4': 369.99, 'G4': 392.00,
+      'G#4': 415.30, 'A4': 440.00, 'A#4': 466.16, 'B4': 493.88
+    };
+
+    function playHarmoniumNote(note) {
+      initAudio();
+      if (!noteFreqs[note]) return;
+
+      const freq = noteFreqs[note];
+
+      // Dual oscillator for rich harmonium brass reed sound
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+
+      osc1.type = 'sawtooth';
+      osc2.type = 'square';
+
+      osc1.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      osc2.frequency.setValueAtTime(freq * 1.002, audioCtx.currentTime); // Slight chorus detune
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1400, audioCtx.currentTime);
+
+      gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 0.08); // Bellows swell
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2); // Release
+
+      osc1.connect(filter);
+      osc2.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      osc1.start();
+      osc2.start();
+      osc1.stop(audioCtx.currentTime + 1.25);
+      osc2.stop(audioCtx.currentTime + 1.25);
+    }
+
+    function playTablaStroke(type) {
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      if (type === 'dha') {
+        // Deep Bayyan Bass Drop
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(60, audioCtx.currentTime + 0.25);
+
+        gain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.35);
+      } else {
+        // High Metallic Dayan stroke
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(360, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.12);
+
+        gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      }
+    }
+
+    // Radio Static Noise Generator
+    let staticNode = null;
+    let isStaticOn = false;
+
+    function toggleRadioStatic() {
+      initAudio();
+      if (isStaticOn) {
+        if (staticNode) staticNode.stop();
+        isStaticOn = false;
+        document.getElementById('btn-attar').innerHTML = '<span>✨</span> Radio Static Mode';
+      } else {
+        const bufferSize = audioCtx.sampleRate * 2;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = Math.random() * 2 - 1;
+        }
+        staticNode = audioCtx.createBufferSource();
+        staticNode.buffer = buffer;
+        staticNode.loop = true;
+
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1000;
+        filter.Q.value = 3;
+
+        const gain = audioCtx.createGain();
+        gain.gain.value = 0.04;
+
+        staticNode.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        staticNode.start();
+        isStaticOn = true;
+        document.getElementById('btn-attar').innerHTML = '<span>📻</span> Static Active (Click Stop)';
+      }
+    }
+
+    /* ==========================================================================
+       KEYBOARD INTERACTION & EVENT LISTENERS
+       ========================================================================== */
+    const keyMap = {
+      'a': 'C4', 's': 'D4', 'd': 'E4', 'f': 'F4', 'g': 'G4', 'h': 'A4', 'j': 'B4',
+      'w': 'C#4', 'e': 'D#4', 't': 'F#4', 'y': 'G#4', 'u': 'A#4'
+    };
+
+    window.addEventListener('keydown', (e) => {
+      const key = e.key.toLowerCase();
+      if (keyMap[key]) {
+        playHarmoniumNote(keyMap[key]);
+        triggerKeyVisual(keyMap[key]);
+      } else if (e.code === 'Space') {
+        e.preventDefault();
+        playTablaStroke('dha');
+        pulseDrum('tabla-bayyan');
+      } else if (key === 'w' && e.ctrlKey) {
+        // Applaud
+        triggerDaadAppreciation();
+      }
+    });
+
+    function triggerKeyVisual(note) {
+      const keyEl = document.querySelector(`[data-note="${note}"]`);
+      if (keyEl) {
+        keyEl.classList.add('active');
+        setTimeout(() => keyEl.classList.remove('active'), 200);
+      }
+    }
+
+    function pulseDrum(id) {
+      const drum = document.getElementById(id);
+      if (drum) {
+        drum.style.transform = 'scale(0.92)';
+        setTimeout(() => drum.style.transform = 'scale(1)', 120);
+      }
+    }
+
+    // Attach click events to harmonium keys
+    document.querySelectorAll('.key-white, .key-black').forEach(el => {
+      el.addEventListener('click', () => {
+        const note = el.getAttribute('data-note');
+        playHarmoniumNote(note);
+        el.classList.add('active');
+        setTimeout(() => el.classList.remove('active'), 200);
+      });
+    });
+
+    document.getElementById('tabla-bayyan').addEventListener('click', () => {
+      playTablaStroke('dha');
+      pulseDrum('tabla-bayyan');
+    });
+
+    document.getElementById('tabla-dayan').addEventListener('click', () => {
+      playTablaStroke('tin');
+      pulseDrum('tabla-dayan');
+    });
+
+    document.getElementById('btn-attar').addEventListener('click', toggleRadioStatic);
+
+    /* ==========================================================================
+       WAH! WAH! (DAAD) APPRECIATION FLOATING ROSE PETALS & PHRASES
+       ========================================================================== */
+    const daadPhrases = ["Irshad! Irshad! 🌹", "SubhanAllah! ✨", "Mukarrar Irshad! 👏", "Kya Baat Hai! ❤️", "Wah! Wah! 🌹", "Jiyo! 🎉"];
+
+    document.getElementById('btn-daad').addEventListener('click', triggerDaadAppreciation);
+
+    function triggerDaadAppreciation() {
+      // Play subtle daad acoustic clap
+      playTablaStroke('tin');
+
+      // Floating phrase popup
+      const phrase = daadPhrases[Math.floor(Math.random() * daadPhrases.length)];
+      const popup = document.createElement('div');
+      popup.textContent = phrase;
+      popup.style.position = 'fixed';
+      popup.style.left = `${Math.random() * 60 + 20}%`;
+      popup.style.top = '60%';
+      popup.style.fontFamily = "'Amiri', serif";
+      popup.style.fontSize = '2.2rem';
+      popup.style.color = '#ffd782';
+      popup.style.textShadow = '0 0 20px #ffd782, 0 0 40px #8b1e2d';
+      popup.style.zIndex = '999';
+      popup.style.pointerEvents = 'none';
+      popup.style.transition = 'all 1.5s cubic-bezier(0.1, 0.8, 0.3, 1)';
+      document.body.appendChild(popup);
+
+      setTimeout(() => {
+        popup.style.transform = 'translateY(-120px) scale(1.3)';
+        popup.style.opacity = '0';
+      }, 50);
+
+      setTimeout(() => popup.remove(), 1600);
+
+      // Spawn extra rose petals burst
+      spawnPetalBurst();
+    }
+
+    /* ==========================================================================
+       CANVAS PARTICLES: FLOATING ROSE PETALS & INCENSE SMOKE
+       ========================================================================== */
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    class RosePetal {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = -20;
+        this.size = Math.random() * 8 + 6;
+        this.speedY = Math.random() * 1.2 + 0.6;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.rotation = Math.random() * 360;
+        this.rotSpeed = Math.random() * 2 - 1;
+        this.opacity = Math.random() * 0.7 + 0.3;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += Math.sin(this.y * 0.02) + this.speedX;
+        this.rotation += this.rotSpeed;
+        if (this.y > height + 20) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = '#8b1e2d';
+
+        // Draw Petal Shape
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-this.size, -this.size * 1.5, -this.size * 1.5, this.size, 0, this.size * 1.8);
+        ctx.bezierCurveTo(this.size * 1.5, this.size, this.size, -this.size * 1.5, 0, 0);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    const petals = Array.from({ length: 25 }, () => new RosePetal());
+
+    function spawnPetalBurst() {
+      for (let i = 0; i < 15; i++) {
+        const p = new RosePetal();
+        p.y = height - 150;
+        p.speedY = -Math.random() * 3 - 2;
+        petals.push(p);
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, width, height);
+      petals.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+
+    animateParticles();
+
+    /* ==========================================================================
+       AUDIO VISUALIZER ANIMATION IN PLAYER
+       ========================================================================== */
+    const vizCanvas = document.getElementById('visualizer-canvas');
+    const vizCtx = vizCanvas.getContext('2d');
+
+    function drawVisualizer() {
+      vizCtx.clearRect(0, 0, vizCanvas.width, vizCanvas.height);
+      const bars = 6;
+      const barWidth = 6;
+      const gap = 4;
+
+      for (let i = 0; i < bars; i++) {
+        const barHeight = isPlaying ? Math.random() * 20 + 5 : 4;
+        const x = i * (barWidth + gap) + 10;
+        const y = vizCanvas.height - barHeight;
+
+        vizCtx.fillStyle = '#e6c280';
+        vizCtx.fillRect(x, y, barWidth, barHeight);
+      }
+      setTimeout(drawVisualizer, 100);
+    }
+    drawVisualizer();
+
+    // Start Quote Rotation & Player Initialization on load
+    window.addEventListener('DOMContentLoaded', () => {
+      rotateQuotes();
+      updatePlayerUI();
+      renderTracklist();
+    });
+  </script>
+</body>
+</html>
